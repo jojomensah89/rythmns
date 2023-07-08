@@ -3,11 +3,14 @@
 import React, { useState, useEffect } from "react";
 
 import AuthModal from "@/components/AuthModal";
-import Modal from "@/components/Modal";
-import { title } from "process";
+import UploadModal from "@/components/UploadModal";
+
+// create a modal Provider for all the Modals
 
 const ModalProvider = () => {
   const [isMounted, setIsMounted] = useState(false);
+
+  // Modals can only be triggered after the component has been  to resolve hydration errors
   useEffect(() => {
     setIsMounted(true);
   }, []);
@@ -15,10 +18,11 @@ const ModalProvider = () => {
   if (!isMounted) {
     return null;
   }
+
   return (
     <>
       <AuthModal />
-   
+      <UploadModal />
     </>
   );
 };

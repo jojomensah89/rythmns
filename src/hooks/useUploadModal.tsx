@@ -1,18 +1,18 @@
 import React from "react";
 import { create } from "zustand";
 
-type AuthModalStore = {
+type UploadModalStore = {
   isOpen: boolean;
   onOpen: () => void;
   onClose: () => void;
 };
 
-// create a global state for auth modal triggers 
+// create a global state for upload modal triggers
 
-const useAuthModal = create<AuthModalStore>((set) => ({
+const useUploadModal = create<UploadModalStore>((set) => ({
   isOpen: false,
   onOpen: () => set({ isOpen: true }),
   onClose: () => set({ isOpen: false }),
 }));
 
-export default useAuthModal;
+export default useUploadModal;
