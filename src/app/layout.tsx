@@ -5,6 +5,7 @@ import { Figtree } from "next/font/google";
 import UserProvider from "@/providers/UserProvider";
 import ModalProvider from "@/providers/ModalProvider";
 import ToasterProvider from "@/providers/ToasterProvider";
+import getSongsByUser from "@/actions/getSongsByUser";
 
 const font = Figtree({ subsets: ["latin"] });
 
@@ -12,12 +13,14 @@ export const metadata = {
   title: "Rythmns",
   description: "Music Therapy",
 };
+export const revalidate = 0;
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const userSongs = await getSongsByUser();
   return (
     <html lang="en">
       <body className={font.className}>
@@ -25,7 +28,7 @@ export default function RootLayout({
         <SupabaseProvider>
           <UserProvider>
             <ModalProvider />
-            <Sidebar>{children}</Sidebar>
+            <Sidebar userSongs={userSongs}>{children}</Sidebar>
           </UserProvider>
         </SupabaseProvider>
       </body>
