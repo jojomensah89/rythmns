@@ -1,29 +1,37 @@
 import { Song } from "@/types/stripe";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
+import { data } from "autoprefixer";
 import { cookies } from "next/headers";
 
-const getSongsByUser = async (): Promise<Song[]> => {
+const getLikedSongsByUser = async (): Promise<Song[]> => {
   const supabase = createServerComponentClient({
     cookies: cookies,
   });
-  const { data:{session}, error: sessionError } =
-    await supabase.auth.getSession();
+  const {
+    data: { session },
+    error: sessionError,
+  } = await supabase.auth.getSession();
 
   if (sessionError) {
     console.log(sessionError.message);
     return [];
   }
 
-  const { data: songs, error } = await supabase
+  const { data, error } = await supabase
     .from("songs")
-    .select("*")
+    .select("*,song(*)")
     .eq("user_id", session?.user.id)
     .order("created_at", { ascending: false });
 
   if (error) {
     console.log(error);
+    return [];
   }
-  return (songs as any) || [];
+  if (!data) {
+    return [];
+  }
+
+  return data.map((item) => ({ ...item.songs }));
 };
 
-export default getSongsByUser;
+export default getLikedSongsByUser;

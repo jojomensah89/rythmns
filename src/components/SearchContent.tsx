@@ -23,7 +23,6 @@ const SearchContent = ({ songs }: Props) => {
           <div className="flex-1">
             <MediaItem onClick={() => {}} song={song} />
           </div>
-          {/* Todo: Like button Placeholder */}
           <LikeButton songId={song.id} />
         </div>
       ))}
