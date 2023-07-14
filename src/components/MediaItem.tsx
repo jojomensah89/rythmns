@@ -1,35 +1,31 @@
 "use client";
 
 import useLoadImage from "@/hooks/useLoadImage";
+import usePlayer from "@/hooks/usePlayer";
 import { Song } from "@/types/stripe";
 import Image from "next/image";
 import React from "react";
 
 type Props = {
   song: Song;
-  onClick: (id: string) => void;
+  onClick?: (id: string) => void;
 };
 
 const MediaItem = ({ song, onClick }: Props) => {
   const imageUrl = useLoadImage(song);
+  const player = usePlayer();
   const handleClick = () => {
     if (onClick) {
       return onClick(song.id);
     }
 
     // Todo: default turn on player
+    player.setId(song.id);
   };
   return (
     <div
       onClick={handleClick}
-      className="flex 
-    items-center 
-    gap-x-3 
-    cursor-pointer 
-    hover:bg-neutral-800/50 
-    w-full 
-    p-2 
-    rounded-md"
+      className="flex items-center w-full p-2 rounded-md cursor-pointer gap-x-3 hover:bg-neutral-800/50"
     >
       <div
         className="  relative 
@@ -45,9 +41,9 @@ const MediaItem = ({ song, onClick }: Props) => {
           fill
         />
       </div>
-      <div className="flex flex-col gap-y-1 overflow-hidden">
+      <div className="flex flex-col overflow-hidden gap-y-1">
         <p className="text-white truncate">{song.title}</p>
-        <p className="text-sm text-neutral-400 truncate">{song.author}</p>
+        <p className="text-sm truncate text-neutral-400">{song.author}</p>
       </div>
     </div>
   );

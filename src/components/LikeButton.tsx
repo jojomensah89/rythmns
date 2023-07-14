@@ -12,7 +12,7 @@ type Props = {
 };
 
 const LikeButton = ({ songId }: Props) => {
-  const [isLiked, setisLiked] = useState(false);
+  const [isLiked, setisLiked] = useState<boolean>(false);
   const router = useRouter();
   const { supabaseClient } = useSessionContext();
   const AuthModal = useAuthModal();
@@ -35,7 +35,7 @@ const LikeButton = ({ songId }: Props) => {
       }
     };
     checkSongStatus();
-  }, [user, supabaseClient, songId]);
+  }, [user?.id, supabaseClient, songId]);
 
   const Icon = isLiked ? AiFillHeart : AiOutlineHeart;
 
