@@ -9,7 +9,7 @@ export const revalidate = 0;
 
 const Like = async () => {
   const songs = await getLikedSongsByUser();
-  console.log(songs);
+  // console.log(songs);
   return (
     <div className="w-full h-full overflow-hidden overflow-y-auto bg-neutral-900">
       <Header>
@@ -32,7 +32,7 @@ const Like = async () => {
           </div>
         </div>
       </Header>
-      {/* <LikedContent songs={songs} /> */}
+      <LikedContent songs={songs} />
     </div>
   );
 };

@@ -13,6 +13,7 @@ import { toast } from "react-hot-toast";
 
 import Button from "./Button";
 import { useUser } from "@/hooks/useUser";
+import usePlayer from "@/hooks/usePlayer";
 
 type Props = {
   children: React.ReactNode;
@@ -20,6 +21,7 @@ type Props = {
 };
 
 const Header = ({ children, className }: Props) => {
+  const player = usePlayer();
   const { onOpen } = useAuthModal();
   const router = useRouter();
   const supabaseClient = useSupabaseClient();
@@ -28,6 +30,7 @@ const Header = ({ children, className }: Props) => {
   const handleLogout = async () => {
     const { error } = await supabaseClient.auth.signOut();
     // Todo:Reset Playing Songs
+    player.reset();
     router.refresh();
     if (error) {
       toast.error(error.message);
@@ -42,40 +45,34 @@ const Header = ({ children, className }: Props) => {
         className
       )}
     >
-      <div className="w-full mb-4 flex items-center justify-between">
-        <div className="hidden md:flex gap-x-2 items-center">
+      <div className="flex items-center justify-between w-full mb-4">
+        <div className="items-center hidden md:flex gap-x-2">
           <button
-            className="rounded-full bg-black flex items-center justify-center hover:opacity-75 transition"
+            className="flex items-center justify-center transition bg-black rounded-full hover:opacity-75"
             onClick={() => router.back()}
           >
             <RxCaretLeft size={35} className="text-white" />
           </button>
           <button
-            className="rounded-full bg-black flex items-center justify-center hover:opacity-75 transition"
+            className="flex items-center justify-center transition bg-black rounded-full hover:opacity-75"
             onClick={() => router.forward()}
           >
             <RxCaretRight size={35} className="text-white" />
           </button>
         </div>
-        <div className="flex md:hidden gap-x-2 items-center">
-          <button
-            className="rounded-full p-2 bg-white flex
-          items-center justify-center hover:opacity-75 transition"
-          >
+        <div className="flex items-center md:hidden gap-x-2">
+          <button className="flex items-center justify-center p-2 transition bg-white rounded-full hover:opacity-75">
             <HiHome className="text-black" size={20} />
           </button>
-          <button
-            className="rounded-full p-2 bg-white flex
-          items-center justify-center hover:opacity-75 transition"
-          >
+          <button className="flex items-center justify-center p-2 transition bg-white rounded-full hover:opacity-75">
             <BiSearch className="text-black" size={20} />
           </button>
         </div>
-        <div className="flex justify-between items-center gap-x-4">
+        <div className="flex items-center justify-between gap-x-4">
           {user ? (
-            <div className="flex gap-x-4 items-center">
+            <div className="flex items-center gap-x-4">
               {" "}
-              <Button onClick={handleLogout} className="bg-white px-6 py-2">
+              <Button onClick={handleLogout} className="px-6 py-2 bg-white">
                 Logout
               </Button>
               <Button
@@ -90,13 +87,13 @@ const Header = ({ children, className }: Props) => {
               <div>
                 <Button
                   onClick={onOpen}
-                  className="bg-transparent text-neutral-300 font-medium"
+                  className="font-medium bg-transparent text-neutral-300"
                 >
                   Sign up
                 </Button>
               </div>
               <div>
-                <Button onClick={onOpen} className="bg-white px-6 py-2">
+                <Button onClick={onOpen} className="px-6 py-2 bg-white">
                   Log in{" "}
                 </Button>
               </div>

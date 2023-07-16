@@ -4,10 +4,16 @@ import React, { useState, useEffect } from "react";
 
 import AuthModal from "@/components/AuthModal";
 import UploadModal from "@/components/UploadModal";
+import SubscribeModal from "@/components/SubscribeModal";
+import { ProductWithPrice } from "@/types/stripe";
+
+interface ModalProviderProps {
+  products: ProductWithPrice[];
+}
 
 // create a modal Provider for all the Modals
 
-const ModalProvider = () => {
+const ModalProvider: React.FC<ModalProviderProps> = ({ products }) => {
   const [isMounted, setIsMounted] = useState(false);
 
   // Modals can only be triggered after the component has been  to resolve hydration errors
@@ -23,6 +29,7 @@ const ModalProvider = () => {
     <>
       <AuthModal />
       <UploadModal />
+      <SubscribeModal products={products} />
     </>
   );
 };

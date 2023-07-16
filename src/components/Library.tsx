@@ -7,15 +7,17 @@ import useUploadModal from "@/hooks/useUploadModal";
 import { Song } from "@/types/stripe";
 import MediaItem from "./MediaItem";
 import useOnPlay from "@/hooks/useOnPlay";
+import useSubscribeModal from "@/hooks/useSubscribeModal";
 
 type Props = {
   userSongs: Song[];
 };
 
 const Library = ({ userSongs }: Props) => {
+  const subscribeModal = useSubscribeModal();
   const AuthModal = useAuthModal();
   const uploadModal = useUploadModal();
-  const { user } = useUser();
+  const { user, subscription } = useUser();
   const onplay = useOnPlay(userSongs);
   const handleClick = () => {
     // check for user session
@@ -23,6 +25,9 @@ const Library = ({ userSongs }: Props) => {
       return AuthModal.onOpen();
     }
     //check for subscription
+    if (!subscription) {
+      return subscribeModal.onOpen();
+    }
 
     return uploadModal.onOpen();
   };
